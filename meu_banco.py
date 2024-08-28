@@ -19,10 +19,10 @@ def depositar(valor):
 def sacar(valor):
     global saldo
     global numero_saque
+    global valor_sacado
 
     if valor <= saldo:
-        saldo-=valor
-        global valor_sacado 
+        saldo-=valor 
         valor_sacado += valor
         
         numero_saque += 1
