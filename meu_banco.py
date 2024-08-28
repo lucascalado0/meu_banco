@@ -1,15 +1,19 @@
-def depositar(valor):
+####### Funções utilizadas no código #######
+
+def depositar(valor): 
     global saldo
     global numero_deposito 
+    global valor_depositado
 
     if valor > 0.0:
         saldo += valor
+        valor_depositado += valor
 
         numero_deposito += 1
     
-    mensagem_deposito = f"\nR${quantia} depositado com sucesso!"
+        mensagem_deposito = f"\nR${quantia:.2f} depositado com sucesso!"
 
-    return mensagem_deposito
+        return mensagem_deposito
 
 
 def sacar(valor):
@@ -18,25 +22,37 @@ def sacar(valor):
 
     if valor <= saldo:
         saldo-=valor
+        valor_sacado += valor
+        
 
         numero_saque += 1
 
-    mensagem_saque = f"\nR${quantia} sacada com sucesso!"
+    mensagem_saque = f"\nR${quantia:.2f} sacada com sucesso!"
 
     return mensagem_saque
-    
 
-        
+def extrato():
     
+    print(" Extrato Bancário ".center(44,"#"))
+    extrato = f"""
+    \n->Número de depósitos: {numero_deposito}
+    \n->Valor depositado: R${valor_depositado:.2f}
+    \n->Número de saques: {numero_saque}
+    \n->Valor sacado: R${valor_sacado:.2f}
+    \n->Saldo atual da conta: R${saldo:.2f}
+    """
+    return extrato
+
+####### Fim das funções #######   
+
+
+####### Variáveis utilizadas #######
     
-
-    
-
-
+valor_sacado = 0
+valor_depositado = 0
 numero_deposito = 0
 saldo = 0
 limite = 500
-extrato = " "
 numero_saque = 0
 LIMITE_SAQUE = 3
 
@@ -52,6 +68,9 @@ menu = """
 
 => """
 
+####### Fim das variáveis ########
+
+
 nome_usuario = input("Para inicializar o atendimento, informe o seu nome: ")
 
 print(f"\nBem vindo ao nosso sistema, {nome_usuario}!")
@@ -61,34 +80,49 @@ print(f"Agora escolha a opção que você deseja: ")
 while True:
     opcao = input(menu).upper()
 
+
     if opcao == 'D':
         print("\nDepósito selecionado\n")
 
         quantia = float(input("Informe o valor que deseja depositar: R$"))
-
-        print(depositar(quantia))
-
-
         
-    
+        if quantia > 0:
+            print(depositar(quantia))
+            
+        else:
+            print("Operação falhou. Valor informado é inválido")
+
+
     elif opcao == 'S':
         print("\nSaque selecionado")
 
         quantia = float(input("Informe a quantia que deseja sacar: R$"))
-
-        if quantia <= saldo:
+        if numero_saque == LIMITE_SAQUE:
+            print("O número de saque diário já foi atingido")
+        
+        elif quantia > limite:
+            print("O seu limite de saque diário é R$500")
+            
+        elif quantia <= saldo:
             print(sacar(quantia))
         
         else:
-            print("\nSaldo insuficiente")
+            print("\nO seu saldo é insuficiente para esta operação!")
     
+
     elif opcao == 'E':
         print("\nExtrato selecionado")
+        
+        if numero_deposito >= 1:
+            print(extrato())
+        else:
+            print("\nNão houve movimentação na conta!")
     
+
     elif opcao == 'Q':
         print("\nAtendimento encerrado. Obrigado por nos escolher, tenha um bom dia!")
         break
 
+
     else:
         print("Operação inválida")
-
