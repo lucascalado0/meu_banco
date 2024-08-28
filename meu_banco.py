@@ -22,9 +22,9 @@ def sacar(valor):
 
     if valor <= saldo:
         saldo-=valor
+        global valor_sacado 
         valor_sacado += valor
         
-
         numero_saque += 1
 
     mensagem_saque = f"\nR${quantia:.2f} sacada com sucesso!"
@@ -98,12 +98,12 @@ while True:
 
         quantia = float(input("Informe a quantia que deseja sacar: R$"))
         if numero_saque == LIMITE_SAQUE:
-            print("O número de saque diário já foi atingido")
+            print("O diária de saque já foi atingida")
         
         elif quantia > limite:
-            print("O seu limite de saque diário é R$500")
+            print("O seu limite por saque é R$500")
             
-        elif quantia <= saldo:
+        elif quantia <= saldo and quantia <= limite:
             print(sacar(quantia))
         
         else:
